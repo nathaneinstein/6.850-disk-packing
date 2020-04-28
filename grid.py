@@ -163,7 +163,7 @@ class Grid(object):
                 d.set_facecolor('none')
                 #d.set_linestyle(":")
                 d.set_linewidth(1)
-                d.set_alpha(0.2)
+                d.set_alpha(0.4)
             elif d.center in max_packing:
                 d.set_facecolor('tomato')
                 d.set_edgecolor('none')
