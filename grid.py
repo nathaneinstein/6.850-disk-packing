@@ -54,13 +54,16 @@ class Grid(object):
   
     def _get_maximal_disjoint_subset(self, disks):
         """ Performs brute-force search for the maximal subset of non-overlapping 
-            disks. In particular, if there are n disks, it sequentially checks 
-            each of the nCr possible subsets of size r, for sequentially smaller 
-            values of r. 
+            disks.
+
+            The maximum number of disjoint unit disks that can be contained
+            in a kxk grid cell is O(k^2), so r is bounded above by O(k^2). So, since 
+            a single grid cell can contain up to n (overlapping) disks, this 
+            function will take order nCr = n-choose-O(k^2) = O(n^O(k^2)).
         """
 
         def _any_overlapping(disks):
-            """ Iterates through all nC2 pairs in passed list of disks checking for 
+            """ Iterates through all rC2 pairs in passed list of disks checking for 
                 pair-wise overlap. """
             for i in range(len(disks)):
                 di = disks[i]
@@ -71,8 +74,10 @@ class Grid(object):
                         return True
             return False
 
-        
-        r = len(disks)
+        # maximal set of disjoint disks in single kxk cell includes 
+        # at most 4/pi * k^2 disks, so no need to consider larger sets
+        r = int(np.ceil( (4/np.pi) * self.k**2 ))
+        r = min(r, len(disks))
         while r > 0:
             for subset in combinations(disks, r):
                 if not _any_overlapping(subset):
